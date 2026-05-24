@@ -1,5 +1,6 @@
 import { Hero } from "@/components/marketing/hero";
 import { SocialProof } from "@/components/marketing/social-proof";
+import { FeaturedJobs } from "@/components/marketing/featured-jobs";
 import { HowItWorks } from "@/components/marketing/how-it-works";
 import { Differentiators } from "@/components/marketing/differentiators";
 import { Categories } from "@/components/marketing/categories";
@@ -12,6 +13,7 @@ export default function HomePage() {
     <>
       <Hero />
       <SocialProof />
+      <FeaturedJobs />
       <HowItWorks />
       <Differentiators />
       <Categories />

@@ -42,6 +42,7 @@ const config: Config = {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        paper: "hsl(var(--paper))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -50,6 +51,13 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        mono: [
+          "var(--font-mono)",
+          "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "monospace",
+        ],
       },
       keyframes: {
         "accordion-down": {

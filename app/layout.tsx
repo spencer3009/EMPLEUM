@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { SITE } from "@/lib/constants";
 import "./globals.css";
 
@@ -7,6 +7,13 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -77,7 +84,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es-PE" className={inter.variable}>
+    <html
+      lang="es-PE"
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+    >
       <body className="min-h-screen bg-background font-sans antialiased">
         {children}
       </body>

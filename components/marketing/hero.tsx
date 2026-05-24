@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Zap } from "lucide-react";
+import { JobSearch } from "@/components/marketing/job-search";
 
 export function Hero() {
   return (
@@ -14,7 +14,7 @@ export function Hero() {
       />
 
       <div className="container-tight flex flex-col items-center text-center">
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm">
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground shadow-sm">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" />
           Lanzamiento en Perú · 2026
         </div>
@@ -33,18 +33,16 @@ export function Hero() {
           marketing en Perú. Sin empleos falsos, sin formularios eternos.
         </p>
 
-        <div className="mt-10 flex w-full flex-col items-center gap-4 sm:w-auto">
-          <Button asChild size="xl" className="w-full sm:w-auto">
-            <Link href="/empleos">
-              Encuentra tu próximo trabajo
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-          </Button>
+        <div className="mt-10 w-full">
+          <JobSearch />
+        </div>
+
+        <div className="mt-6">
           <Link
             href="/publicar"
             className="text-sm font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
           >
-            ¿Buscas talento? Publica una vacante gratis
+            ¿Buscas talento? Publica una vacante gratis →
           </Link>
         </div>
 
