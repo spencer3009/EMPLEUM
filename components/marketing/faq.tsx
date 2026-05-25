@@ -12,11 +12,11 @@ const FAQS = [
   },
   {
     q: "¿Qué tipos de empleos publican?",
-    a: "Empleos en tecnología (desarrollo, data, producto, diseño UX/UI) y marketing digital. Buscamos roles full-time, remotos, híbridos y presenciales en Perú — desde junior hasta lead.",
+    a: "Empleos en tecnología (desarrollo, datos, producto, diseño UX/UI) y marketing digital. Buscamos roles a tiempo completo, remotos, híbridos y presenciales en Perú — desde practicantes hasta líderes de área.",
   },
   {
     q: "¿Cómo verifican que los empleos sean reales?",
-    a: "Cada empresa pasa por un proceso de verificación: validamos su RUC, presencia online y al hiring manager. Si un anuncio no cumple, no se publica. Por eso no vas a ver 'vendedor independiente' disfrazado de 'asesor comercial senior'.",
+    a: "Cada empresa pasa por un proceso de verificación: validamos su RUC, su presencia digital y al responsable de selección. Si un anuncio no cumple, no se publica. Por eso no vas a ver 'vendedor independiente' disfrazado de 'asesor comercial de alto nivel'.",
   },
   {
     q: "¿Cuánto cuesta para empresas?",
@@ -24,11 +24,11 @@ const FAQS = [
   },
   {
     q: "¿Tienen app móvil?",
-    a: "Empleum está construido mobile-first, así que la experiencia en tu celular es nativa desde el navegador. App nativa en iOS y Android está en el roadmap para 2026.",
+    a: "Empleum está construido pensando primero en el celular, así que la experiencia desde el navegador móvil es excelente. La aplicación nativa para iOS y Android está en nuestros planes para 2026.",
   },
   {
     q: "¿Puedo postular sin subir CV?",
-    a: "Sí. Tu perfil de Empleum reemplaza al CV — completas tu experiencia una vez y postulas en 1 click. Si una empresa quiere tu CV en PDF, lo generamos automáticamente desde tu perfil.",
+    a: "Sí. Tu perfil de Empleum reemplaza al CV — completas tu experiencia una vez y postulas en 1 clic. Si una empresa quiere tu CV en PDF, lo generamos automáticamente desde tu perfil.",
   },
 ] as const;
 

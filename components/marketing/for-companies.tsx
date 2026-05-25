@@ -26,7 +26,7 @@ export function ForCompanies() {
             id="companies-heading"
             className="text-balance text-3xl font-semibold tracking-tight md:text-5xl"
           >
-            ¿Reclutas talento tech o marketing?
+            ¿Reclutas talento en tecnología o marketing?
           </h2>
           <p className="mt-5 text-balance text-base leading-relaxed text-white/70 md:text-lg">
             En Computrabajo recibes 500 CVs random. En Empleum recibes 20

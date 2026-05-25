@@ -10,13 +10,13 @@ const STEPS = [
     icon: SlidersHorizontal,
     title: "2. Filtra lo que buscas",
     description:
-      "Remoto, híbrido, salario, seniority. Encuentra rápido lo que importa.",
+      "Remoto, híbrido, salario, nivel. Encuentra rápido lo que importa.",
   },
   {
     icon: Send,
-    title: "3. Postula en 1 click",
+    title: "3. Postula en 1 clic",
     description:
-      "Tu perfil llega directo al hiring manager. Sin intermediarios.",
+      "Tu perfil llega directo al responsable de selección. Sin intermediarios.",
   },
 ] as const;
 

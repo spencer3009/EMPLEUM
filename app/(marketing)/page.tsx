@@ -12,8 +12,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <SocialProof />
       <FeaturedJobs />
+      <SocialProof />
       <HowItWorks />
       <Differentiators />
       <Categories />

@@ -5,7 +5,7 @@ const ITEMS = [
     icon: Search,
     title: "Empleos verificados",
     description:
-      "Cada vacante se valida antes de publicarse. Sin 'vendedor independiente' disfrazado de 'ejecutivo senior'.",
+      "Cada vacante se valida antes de publicarse. Sin 'vendedor independiente' disfrazado de 'ejecutivo de cuentas'.",
   },
   {
     icon: DollarSign,
@@ -15,15 +15,15 @@ const ITEMS = [
   },
   {
     icon: Zap,
-    title: "Postulación en 1 click",
+    title: "Postulación en 1 clic",
     description:
       "Cero subir CVs en Word con foto de carnet. Tu perfil y listo.",
   },
   {
     icon: Smartphone,
-    title: "Mobile-first de verdad",
+    title: "Pensado para tu celular",
     description:
-      "Diseñado para tu celular. Postula desde el bus, el café o donde sea.",
+      "Diseñado primero para el móvil. Postula desde el bus, el café o donde sea.",
   },
 ] as const;
 

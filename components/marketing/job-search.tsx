@@ -4,11 +4,12 @@ import * as React from "react";
 import { Search, MapPin, ArrowRight } from "lucide-react";
 
 const ROTATING_PLACEHOLDERS = [
-  "Frontend Developer",
-  "Data Analyst",
-  "Growth Marketing",
-  "Product Designer (UX/UI)",
-  "Backend Engineer",
+  "Desarrollador Frontend",
+  "Analista de Datos",
+  "Marketing Digital",
+  "Diseñador de Producto",
+  "Asistente de Reclutamiento",
+  "Practicante de Administración",
 ] as const;
 
 const POPULAR_LOCATIONS = [

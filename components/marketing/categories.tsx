@@ -19,14 +19,14 @@ const CATEGORIES = [
   },
   { name: "Diseño UX/UI", icon: Palette, count: 18, href: "/empleos?cat=design" },
   {
-    name: "Data & Analytics",
+    name: "Datos y Analítica",
     icon: BarChart,
     count: 12,
     href: "/empleos?cat=data",
   },
   { name: "Producto", icon: Rocket, count: 9, href: "/empleos?cat=product" },
   {
-    name: "Ventas Tech",
+    name: "Ventas en Tecnología",
     icon: Briefcase,
     count: 14,
     href: "/empleos?cat=sales",

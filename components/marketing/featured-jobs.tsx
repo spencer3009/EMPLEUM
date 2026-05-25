@@ -14,7 +14,6 @@ interface FeaturedJob {
   slug: string;
   title: string;
   company: string;
-  monogram: string;
   location: string;
   modality: Modality;
   salaryMin: number;
@@ -29,89 +28,86 @@ interface FeaturedJob {
 
 /**
  * Hardcoded for the initial scaffold.
+ * Salary ranges + titles reflect the real Peruvian tech/marketing market.
+ * Practicantes S/1k–1.5k · Asistentes S/2k–3.5k · Analistas/Coordinadores S/4k–7k · Líderes S/7k–12k.
  * Later: replace with `await db.query(...)` or a fetch to /api/jobs.
  */
 const FEATURED_JOBS: readonly FeaturedJob[] = [
   {
-    slug: "senior-fullstack-engineer-crehana",
-    title: "Senior Full-Stack Engineer",
+    slug: "lider-desarrollo-full-stack-crehana",
+    title: "Líder de Desarrollo Full Stack",
     company: "Crehana",
-    monogram: "C",
-    location: "Remoto · LatAm",
+    location: "Remoto · Latinoamérica",
     modality: "Remoto",
-    salaryMin: 8000,
-    salaryMax: 12000,
+    salaryMin: 7000,
+    salaryMax: 10500,
     postedDays: 2,
     tags: ["TypeScript", "Next.js", "PostgreSQL"],
     verified: true,
     isFeatured: true,
     excerpt:
-      "Lidera el roadmap del producto principal de Crehana. Stack moderno, equipo distribuido en LatAm, decisiones de arquitectura desde día uno.",
+      "Lidera el desarrollo del producto principal de Crehana. Equipo distribuido en Latinoamérica, tecnología moderna y decisiones de arquitectura desde el primer día.",
   },
   {
-    slug: "product-designer-yape",
-    title: "Product Designer (UX/UI)",
+    slug: "disenador-de-producto-yape",
+    title: "Diseñador de Producto (UX/UI)",
     company: "Yape",
-    monogram: "Y",
-    location: "Lima",
+    location: "San Isidro, Lima",
     modality: "Híbrido",
-    salaryMin: 6500,
-    salaryMax: 9000,
+    salaryMin: 5500,
+    salaryMax: 7800,
     postedDays: 1,
-    tags: ["Figma", "Design Systems", "Mobile"],
+    tags: ["Figma", "Sistemas de Diseño", "Móvil"],
     verified: true,
     isFresh: true,
   },
   {
-    slug: "growth-marketing-manager-joinnus",
-    title: "Growth Marketing Manager",
+    slug: "jefe-de-marketing-digital-joinnus",
+    title: "Jefe de Marketing Digital",
     company: "Joinnus",
-    monogram: "J",
     location: "Remoto · Perú",
     modality: "Remoto",
-    salaryMin: 7000,
-    salaryMax: 10000,
+    salaryMin: 4500,
+    salaryMax: 6500,
     postedDays: 3,
-    tags: ["Performance", "SEO", "CRM"],
+    tags: ["Rendimiento", "SEO", "CRM"],
     verified: true,
   },
   {
-    slug: "data-analyst-senior-culqi",
-    title: "Data Analyst Sr.",
+    slug: "practicante-analisis-datos-culqi",
+    title: "Practicante de Análisis de Datos",
     company: "Culqi",
-    monogram: "Cq",
-    location: "Lima",
+    location: "Miraflores, Lima",
     modality: "Presencial",
-    salaryMin: 5500,
-    salaryMax: 8000,
-    postedDays: 5,
-    tags: ["SQL", "Looker", "Python"],
+    salaryMin: 1300,
+    salaryMax: 1500,
+    postedDays: 1,
+    tags: ["SQL", "Excel", "Power BI"],
     verified: true,
+    isFresh: true,
   },
   {
-    slug: "backend-engineer-kambista",
-    title: "Backend Engineer (Node.js)",
+    slug: "desarrollador-backend-kambista",
+    title: "Desarrollador Backend (Node.js)",
     company: "Kambista",
-    monogram: "K",
     location: "Remoto · Perú",
     modality: "Remoto",
-    salaryMin: 7500,
-    salaryMax: 11000,
+    salaryMin: 4500,
+    salaryMax: 6500,
     postedDays: 4,
     tags: ["Node.js", "AWS", "MySQL"],
     verified: true,
   },
   {
-    slug: "performance-marketing-lead-rappi",
-    title: "Performance Marketing Lead",
+    slug: "asistente-redes-sociales-rappi",
+    title: "Asistente de Redes Sociales",
     company: "Rappi",
-    monogram: "R",
-    location: "Lima",
+    location: "Surquillo, Lima",
     modality: "Híbrido",
-    salaryMin: 8000,
-    salaryMax: 13000,
+    salaryMin: 2200,
+    salaryMax: 3000,
     postedDays: 6,
-    tags: ["Paid Media", "Analytics", "B2C"],
+    tags: ["Redes Sociales", "Redacción", "Anuncios Meta"],
     verified: true,
   },
 ];
@@ -129,7 +125,13 @@ const solesFormat = new Intl.NumberFormat("es-PE", {
 });
 
 function formatSalary(min: number, max: number): string {
+  if (min === max) return `S/ ${solesFormat.format(min)}`;
   return `S/ ${solesFormat.format(min)} – ${solesFormat.format(max)}`;
+}
+
+function relativeTime(days: number): string {
+  if (days === 1) return "Hace 1 día";
+  return `Hace ${days} días`;
 }
 
 function modalityDot(m: Modality): string {
@@ -145,140 +147,135 @@ function modalityDot(m: Modality): string {
 
 function JobCard({ job }: { job: FeaturedJob }) {
   const isFeatured = job.isFeatured ?? false;
+
   return (
     <Link
       href={`/empleos/${job.slug}`}
       className={cn(
-        "group relative flex h-full flex-col rounded-xl border border-foreground/10 p-6 transition-all duration-300",
-        "shadow-[0_1px_0_0_rgba(255,255,255,0.5)_inset]",
-        "hover:-translate-y-0.5 hover:border-foreground/40 hover:shadow-[0_1px_0_0_rgba(255,255,255,0.6)_inset,0_8px_28px_-14px_rgba(10,10,10,0.18)]",
-        isFeatured ? "bg-paper" : "bg-card",
+        "group relative flex h-full flex-col rounded-2xl border p-5 transition-all duration-200 md:p-6",
+        "hover:-translate-y-0.5 hover:shadow-[0_8px_28px_-14px_rgba(10,10,10,0.18)]",
+        isFeatured
+          ? "border-foreground/20 bg-paper hover:border-foreground/50"
+          : "border-border bg-card hover:border-foreground/30",
       )}
     >
-      {/* Top row — monogram + company + verified seal */}
+      {/* Top row — badge + arrow */}
       <div className="flex items-start justify-between gap-3">
-        <div className="flex min-w-0 items-center gap-3">
-          <div
-            aria-hidden="true"
-            className={cn(
-              "flex h-10 w-10 shrink-0 items-center justify-center rounded-md font-mono text-base font-semibold tracking-tight",
-              isFeatured
-                ? "bg-foreground text-background"
-                : "bg-foreground/5 text-foreground",
-            )}
-          >
-            {job.monogram}
-          </div>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-medium text-foreground">
-              {job.company}
-            </p>
-            <p className="mt-0.5 truncate font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-              {job.location}
-            </p>
-          </div>
-        </div>
-        {job.verified && (
-          <span
-            title="Empresa y vacante verificadas por Empleum"
-            className="inline-flex shrink-0 items-center gap-1 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/55"
-          >
-            <BadgeCheck className="h-3 w-3" aria-hidden="true" />
-            Verificado
+        {isFeatured ? (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-3 py-1 text-xs font-medium text-background">
+            <Sparkles
+              className="h-3 w-3"
+              aria-hidden="true"
+              strokeWidth={2.5}
+            />
+            Destacado de la semana
+          </span>
+        ) : (
+          <span className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
+            Postula en 1 clic
           </span>
         )}
+        <ArrowUpRight
+          aria-hidden="true"
+          className="h-4 w-4 shrink-0 text-muted-foreground/40 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground"
+        />
       </div>
-
-      {/* Featured-of-the-week label */}
-      {isFeatured && (
-        <div className="mt-5 inline-flex items-center gap-1.5 self-start rounded-md border border-foreground/15 bg-background/50 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground">
-          <Sparkles
-            className="h-3 w-3 text-amber-600"
-            aria-hidden="true"
-            strokeWidth={2.5}
-          />
-          Destacado de la semana
-        </div>
-      )}
 
       {/* Title */}
       <h3
         className={cn(
-          "mt-4 font-semibold tracking-tight text-foreground",
-          isFeatured ? "text-2xl leading-[1.15] md:text-[28px]" : "text-lg",
+          "mt-4 text-balance font-semibold tracking-tight text-foreground",
+          isFeatured
+            ? "text-2xl leading-[1.15] md:text-[26px]"
+            : "text-lg leading-snug md:text-xl",
         )}
       >
         {job.title}
       </h3>
 
-      {/* Excerpt (featured only) */}
+      {/* Company · Location */}
+      <p className="mt-2 text-sm text-muted-foreground">
+        <span className="font-medium text-foreground/85">{job.company}</span>
+        <span aria-hidden="true" className="mx-1.5 text-foreground/25">
+          ·
+        </span>
+        {job.location}
+      </p>
+
+      {/* Excerpt — featured only */}
       {job.excerpt && (
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           {job.excerpt}
         </p>
       )}
 
-      {/* Salary — Bloomberg-style */}
+      {/* Salary pill */}
       <div className="mt-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-          Salario mensual
-        </p>
-        <p
+        <span
           className={cn(
-            "nums mt-1 font-mono font-semibold text-foreground",
-            isFeatured ? "text-2xl" : "text-xl",
+            "inline-flex items-baseline gap-1.5 rounded-lg px-3 py-2 text-sm font-medium",
+            isFeatured
+              ? "bg-foreground text-background"
+              : "bg-secondary text-foreground",
           )}
         >
-          {formatSalary(job.salaryMin, job.salaryMax)}
-        </p>
+          <span className="nums font-mono">
+            {formatSalary(job.salaryMin, job.salaryMax)}
+          </span>
+          <span
+            className={cn(
+              "text-xs font-normal",
+              isFeatured ? "text-background/70" : "text-muted-foreground",
+            )}
+          >
+            por mes
+          </span>
+        </span>
       </div>
 
-      {/* Modality ticker + tags */}
-      <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
-        <span className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-foreground">
+      {/* Bottom row — modality · verified · posted */}
+      <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-5 text-xs text-muted-foreground">
+        <span className="inline-flex items-center gap-1.5">
           <span
             aria-hidden="true"
-            className={cn("h-1.5 w-1.5 rounded-full", modalityDot(job.modality))}
+            className={cn(
+              "h-1.5 w-1.5 rounded-full",
+              modalityDot(job.modality),
+            )}
           />
-          {job.modality}
+          <span className="text-foreground/85">{job.modality}</span>
         </span>
-        {job.tags.length > 0 && (
-          <span className="font-mono text-[11px] text-muted-foreground">
-            {job.tags.map((tag, i) => (
-              <span key={tag}>
-                {i > 0 && (
-                  <span aria-hidden="true" className="text-foreground/25">
-                    {" · "}
-                  </span>
-                )}
-                {tag}
-              </span>
-            ))}
-          </span>
+        {job.verified && (
+          <>
+            <span aria-hidden="true" className="text-foreground/20">
+              ·
+            </span>
+            <span
+              title="Empresa y vacante verificadas por Empleum"
+              className="inline-flex items-center gap-1"
+            >
+              <BadgeCheck
+                className="h-3.5 w-3.5 text-accent"
+                aria-hidden="true"
+              />
+              Verificado
+            </span>
+          </>
         )}
-      </div>
-
-      {/* Bottom row — posted time + hover CTA */}
-      <div className="mt-auto flex items-center justify-between border-t border-foreground/10 pt-4">
-        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-          {job.isFresh && (
+        <span aria-hidden="true" className="text-foreground/20">
+          ·
+        </span>
+        {job.isFresh ? (
+          <span className="inline-flex items-center gap-1.5 font-medium text-emerald-700">
             <span aria-hidden="true" className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
             </span>
-          )}
-          {job.isFresh ? "Nuevo · " : ""}
-          <span className="nums">
-            Hace {job.postedDays === 1 ? "1d" : `${job.postedDays}d`}
+            Nuevo · {relativeTime(job.postedDays).toLowerCase()}
           </span>
-        </span>
-        <span
-          aria-hidden="true"
-          className="inline-flex translate-x-1 items-center gap-1 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
-        >
-          Postular
-          <ArrowRight className="h-3 w-3" />
-        </span>
+        ) : (
+          <span>{relativeTime(job.postedDays)}</span>
+        )}
       </div>
     </Link>
   );
@@ -289,48 +286,38 @@ export function FeaturedJobs() {
     <section
       id="empleos-destacados"
       aria-labelledby="featured-jobs-heading"
-      className="relative overflow-hidden py-16 md:py-24"
+      className="pt-8 pb-16 md:pt-12 md:pb-24"
     >
-      <div
-        aria-hidden="true"
-        className="bg-grain pointer-events-none absolute inset-0 opacity-[0.045] mix-blend-multiply"
-      />
-
-      <div className="container-tight relative">
-        {/* Editorial header */}
-        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+      <div className="container-tight">
+        {/* Header */}
+        <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
           <div className="max-w-xl">
-            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
-              [ Nº 03 ] · Empleos destacados
-            </p>
             <h2
               id="featured-jobs-heading"
-              className="mt-3 text-balance text-3xl font-semibold tracking-tight text-foreground md:text-4xl"
+              className="text-balance text-3xl font-semibold tracking-tight text-foreground md:text-4xl"
             >
-              Curados esta semana.
+              Empleos para ti
             </h2>
-            <p className="mt-3 text-base leading-relaxed text-muted-foreground md:text-lg">
-              Verificados, con salario visible. Postulación directa al hiring
-              manager — sin intermediarios.
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+              Verificados, con salario claro. Postula directo, sin
+              intermediarios.
             </p>
           </div>
 
           <Link
             href="/empleos"
-            className="group inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-foreground transition-colors hover:text-accent"
+            className="group inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-accent"
           >
-            Ver los <span className="nums">1,247</span> empleos
-            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            Ver los <span className="nums font-mono">1,247</span> empleos
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </Link>
         </div>
 
-        <div aria-hidden="true" className="my-8 h-px w-full bg-foreground/10" />
-
-        {/* Filters with counts */}
+        {/* Filter pills */}
         <div
           role="tablist"
           aria-label="Filtrar por modalidad"
-          className="flex flex-wrap items-center gap-2"
+          className="mt-6 flex flex-wrap items-center gap-2"
         >
           {FILTERS.map((f, i) => (
             <button
@@ -339,17 +326,17 @@ export function FeaturedJobs() {
               role="tab"
               aria-selected={i === 0}
               className={cn(
-                "inline-flex h-9 items-center gap-2 rounded-md border px-3 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors",
+                "inline-flex h-9 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors",
                 i === 0
                   ? "border-foreground bg-foreground text-background"
-                  : "border-foreground/15 bg-card text-muted-foreground hover:border-foreground/40 hover:text-foreground",
+                  : "border-border bg-card text-muted-foreground hover:border-foreground/30 hover:text-foreground",
               )}
             >
               {f.label}
               <span
                 className={cn(
-                  "nums",
-                  i === 0 ? "text-background/70" : "text-foreground/40",
+                  "nums font-mono text-xs",
+                  i === 0 ? "text-background/60" : "text-foreground/40",
                 )}
               >
                 {f.count}

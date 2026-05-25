@@ -18,7 +18,7 @@ export function FinalCta() {
           id="final-cta-heading"
           className="text-balance text-4xl font-bold leading-[1.05] tracking-tight md:text-7xl"
         >
-          Tu próximo trabajo está a 1 click.
+          Tu próximo trabajo está a 1 clic.
         </h2>
         <p className="mt-6 max-w-2xl text-balance text-base leading-relaxed text-muted-foreground md:text-lg">
           Únete a la nueva forma de encontrar empleo en Perú.
