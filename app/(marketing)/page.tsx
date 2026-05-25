@@ -11,8 +11,8 @@ import { FinalCta } from "@/components/marketing/final-cta";
 export default function HomePage() {
   return (
     <>
-      <Hero />
       <FeaturedJobs />
+      <Hero />
       <SocialProof />
       <HowItWorks />
       <Differentiators />

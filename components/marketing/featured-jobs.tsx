@@ -6,6 +6,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { JobSearch } from "@/components/marketing/job-search";
 import { cn } from "@/lib/utils";
 
 type Modality = "Remoto" | "Híbrido" | "Presencial";
@@ -286,19 +287,23 @@ export function FeaturedJobs() {
     <section
       id="empleos-destacados"
       aria-labelledby="featured-jobs-heading"
-      className="pt-8 pb-16 md:pt-12 md:pb-24"
+      className="relative pt-20 pb-16 md:pt-28 md:pb-24"
     >
+      <div
+        aria-hidden="true"
+        className="bg-dot-grid pointer-events-none absolute inset-x-0 top-0 -z-10 h-[480px] [mask-image:radial-gradient(ellipse_at_top,black_30%,transparent_70%)]"
+      />
       <div className="container-tight">
         {/* Header */}
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
-          <div className="max-w-xl">
-            <h2
+          <div className="max-w-2xl">
+            <h1
               id="featured-jobs-heading"
-              className="text-balance text-3xl font-semibold tracking-tight text-foreground md:text-4xl"
+              className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl"
             >
               Empleos para ti
-            </h2>
-            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+            </h1>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">
               Verificados, con salario claro. Postula directo, sin
               intermediarios.
             </p>
@@ -306,18 +311,23 @@ export function FeaturedJobs() {
 
           <Link
             href="/empleos"
-            className="group inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-accent"
+            className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-accent"
           >
             Ver los <span className="nums font-mono">1,247</span> empleos
             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </Link>
         </div>
 
+        {/* Search bar */}
+        <div className="mt-8 md:mt-10">
+          <JobSearch />
+        </div>
+
         {/* Filter pills */}
         <div
           role="tablist"
           aria-label="Filtrar por modalidad"
-          className="mt-6 flex flex-wrap items-center gap-2"
+          className="mt-10 flex flex-wrap items-center gap-2 md:mt-12"
         >
           {FILTERS.map((f, i) => (
             <button
