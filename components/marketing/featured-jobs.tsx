@@ -765,9 +765,9 @@ export function FeaturedJobs() {
           ))}
         </div>
 
-        {/* Master-detail layout */}
-        <div className="mt-6 grid grid-cols-1 gap-5 lg:mt-8 lg:grid-cols-[minmax(0,2.5fr)_minmax(0,3.5fr)] lg:gap-6">
-          {/* Left: list */}
+        {/* Master-detail layout — 50/50 columns on desktop */}
+        <div className="mt-6 grid grid-cols-1 gap-5 lg:mt-8 lg:grid-cols-2 lg:items-start lg:gap-8">
+          {/* Left: vertical list of jobs */}
           <ul className="space-y-3 lg:space-y-4">
             {FEATURED_JOBS.map((job) => (
               <li key={job.slug}>
@@ -780,11 +780,8 @@ export function FeaturedJobs() {
             ))}
           </ul>
 
-          {/* Right: detail panel — sticky on desktop */}
-          <aside
-            aria-label="Detalle del empleo seleccionado"
-            className="lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto"
-          >
+          {/* Right: detail panel — grows freely with content */}
+          <aside aria-label="Detalle del empleo seleccionado">
             <JobDetailPanel job={selected} />
           </aside>
         </div>
