@@ -1,0 +1,100 @@
+# ─────────────────────────────────────────────────────────────────
+# Empleum — Configuración Apache para hosting Hostinger
+# Resuelve el problema del HTML cacheado + assets con hash que rotan.
+#
+# Reglas:
+#   1. HTML (.html y / sin extensión) → NUNCA cachear. Cada visita pide
+#      la versión más reciente del HTML, así el navegador siempre
+#      conoce los hashes actuales de JS/CSS.
+#   2. Archivos con hash en el nombre (_next/static/*) → cachear 1 año
+#      con `immutable`. Son inmutables por definición (su nombre cambia
+#      al cambiar el contenido), así que cachearlos para siempre es
+#      seguro y muy rápido.
+#   3. Compresión gzip activa para ahorrar ancho de banda.
+# ─────────────────────────────────────────────────────────────────
+
+# ════════════════════════════════════════════════════════════════
+# CACHÉ — la parte crítica
+# ════════════════════════════════════════════════════════════════
+
+<IfModule mod_headers.c>
+  # HTML — siempre revalidar (no se cachea)
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+    Header set Pragma "no-cache"
+  </FilesMatch>
+
+  # Assets de Next.js con hash en el nombre (carpeta _next/static/*)
+  # → cachear 1 año, inmutables
+  <FilesMatch "\.(js|mjs|css|woff2|woff|ttf|otf|eot)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Imágenes — cachear 1 mes (cambian poco, pero no son hash)
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|svg|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+
+  # Seguridad básica
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# ════════════════════════════════════════════════════════════════
+# COMPRESIÓN GZIP
+# ════════════════════════════════════════════════════════════════
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE font/woff
+  AddOutputFilterByType DEFLATE font/woff2
+</IfModule>
+
+# ════════════════════════════════════════════════════════════════
+# REWRITES — rutas limpias para Next.js static export
+# ════════════════════════════════════════════════════════════════
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # NOTA HTTPS: activá "Force HTTPS" desde el panel de Hostinger
+  # (hPanel → SSL → Force HTTPS). No lo manejes desde acá porque
+  # Hostinger puede causar loops por su load balancer.
+
+  # Redirect www → apex (empleum.pe es canónico, sin www)
+  # Si querés usar www como canónico, comentá estas dos líneas.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # Default index para directorios
+  DirectoryIndex index.html
+
+  # Si pide /algo sin barra y existe /algo/index.html, agregar barra final
+  # Esto es para que Next.js con trailingSlash:true funcione bien
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html -f
+  RewriteRule ^(.+[^/])$ /$1/ [L,R=301]
+</IfModule>
+
+# ════════════════════════════════════════════════════════════════
+# 404 PERSONALIZADO
+# ════════════════════════════════════════════════════════════════
+
+ErrorDocument 404 /404.html
+
+# ════════════════════════════════════════════════════════════════
+# BLOQUEAR ACCESO A ARCHIVOS SENSIBLES
+# ════════════════════════════════════════════════════════════════
+
+<FilesMatch "^\.(env|git|gitignore|htaccess)">
+  Require all denied
+</FilesMatch>
