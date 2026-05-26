@@ -2,19 +2,58 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  // Static HTML export para deploy en Hostinger (Apache estático).
-  // Genera la carpeta `out/` lista para subir al public_html.
-  output: "export",
-
-  // Quita el optimizer de next/image — requerido cuando hay output:'export'
-  // porque no hay servidor que sirva imágenes optimizadas dinámicamente.
-  images: {
-    unoptimized: true,
+  // Cache headers explícitos para evitar el problema de
+  // "el sitio se rompe a las horas" en Hostinger.
+  //
+  // Idea: el HTML siempre revalida (max-age=0 must-revalidate),
+  // los assets con hash en su nombre se cachean 1 año (immutable).
+  // Así nunca queda HTML viejo apuntando a hashes que ya no existen.
+  async headers() {
+    return [
+      {
+        // Assets generados por Next con hash en el nombre — inmutables
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        // Fuentes desde /_next/static/media/ — inmutables
+        source: "/_next/static/media/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        // Todo lo demás (HTML, páginas) — revalidar siempre
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, must-revalidate",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+        ],
+      },
+    ];
   },
-
-  // URLs como /empleos/algo (sin barra final) → /empleos/algo/index.html
-  // trailingSlash: true permite que Apache las sirva sin .htaccess complejo.
-  trailingSlash: true,
 };
 
 export default nextConfig;
