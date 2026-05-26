@@ -223,8 +223,10 @@ function JobDetailPanel({ job }: { job: FeaturedJob }) {
   return (
     <article
       key={job.slug}
-      className="animate-fade-in-up flex flex-col rounded-2xl border border-border bg-card shadow-[0_1px_0_0_rgba(255,255,255,0.5)_inset]"
+      className="animate-fade-in-up flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[0_1px_0_0_rgba(255,255,255,0.5)_inset] lg:max-h-[calc(100vh-7rem)]"
     >
+      {/* Top fijo — header + info grid se quedan siempre visibles */}
+      <div className="lg:shrink-0">
       <header className="border-b border-border/70 p-6 md:p-8">
         <div className="flex flex-wrap items-center gap-2">
           {job.isFeatured && (
@@ -345,8 +347,11 @@ function JobDetailPanel({ job }: { job: FeaturedJob }) {
           }
         />
       </section>
+      </div>
 
-      <div className="space-y-7 p-6 md:p-8">
+      {/* Scroll a partir de "Descripción del empleo" — el resto del panel queda fijo */}
+      <div className="scrollbar-thin overflow-y-auto lg:min-h-0 lg:flex-1">
+        <div className="space-y-7 p-6 md:p-8">
         <DetailSection title="Descripción del empleo">
           <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
             {job.description}
@@ -385,6 +390,7 @@ function JobDetailPanel({ job }: { job: FeaturedJob }) {
             </div>
           </DetailSection>
         )}
+        </div>
       </div>
     </article>
   );
@@ -560,10 +566,10 @@ export function FeaturedJobs() {
             ))}
           </ul>
 
-          {/* Right: sticky detail panel with subtle internal scroll */}
+          {/* Right: sticky panel — header fijo, scroll desde Descripción */}
           <aside
             aria-label="Detalle del empleo seleccionado"
-            className="scrollbar-thin lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto"
+            className="lg:sticky lg:top-24"
           >
             <JobDetailPanel job={selected} />
           </aside>
